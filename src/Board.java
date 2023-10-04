@@ -34,11 +34,15 @@ public class Board {
     public boolean checkWinner(){
 
         //Check if anyone has 3-5 connecting boxes, depending on layout
+        String firstPosition = null;
+        String secondPosition = null;
+        String thirdPosition = null;
 
         for (int i = 0; i <= 2; i++) {
-            String firstPosition = board.get(i * numberOfboxes);
-            String secondPosition = board.get(i * numberOfboxes + 1);
-            String thirdPosition = board.get(i * numberOfboxes + 2);
+
+             firstPosition = board.get(i * numberOfboxes);
+             secondPosition = board.get(i * numberOfboxes + 1);
+             thirdPosition = board.get(i * numberOfboxes + 2);
 
             if (firstPosition != null && firstPosition.equals(secondPosition) && firstPosition.equals(thirdPosition)) {
                 return true;

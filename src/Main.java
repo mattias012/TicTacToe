@@ -44,21 +44,22 @@ public class Main {
             //Play game
             //Take turns. Player 1 starts. Loop.
             boolean isThereAWinner = false;
-            while(!isThereAWinner){
+            while(!isThereAWinner) {
 
 
                 for (Player player : players) {
                     System.out.println(board);
-
                     System.out.print(player.getplayerName() + ", select a box, by number: ");
                     int markThisBox = scanner.nextInt();
-
                     board.setBoard(markThisBox, player);
+
+                    isThereAWinner = board.checkWinner();
+                    if (isThereAWinner) {
+                        System.out.println("We have a winner! Congratulations " + player.getplayerName() + "!");
+                        break;
+                    }
                 }
-
-                isThereAWinner = board.checkWinner();
             }
-
             System.out.println(board);
 
         }
