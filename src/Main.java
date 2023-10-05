@@ -49,6 +49,7 @@ public class Main {
 
                 for (Player player : players) {
                     System.out.println(board);
+
                     System.out.print(player.getplayerName() + ", select a box, by number: ");
                     int markThisBox = scanner.nextInt();
                     board.setBoard(markThisBox, player);

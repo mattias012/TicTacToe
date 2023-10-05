@@ -1,25 +1,29 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 public class Board {
 
     //Board class, how will it look?
 
     int numberOfboxes;
+    int numberOfRows;
     HashMap<Integer, String> board = new HashMap<>();
 
     //Construct the board object
     Board(int numberOfboxes) {
         this.numberOfboxes = numberOfboxes;
+        this.numberOfRows = numberOfboxes;
 
         int position[] = new int[numberOfboxes * numberOfboxes];
 
         for (int i = 0; i < position.length; i++) {
-            position[i] = i;
+            position[i] = i+1;
         }
 
         for (int j = 0; j < position.length; j++) {
-            this.board.put(position[j], "" + j);
+            this.board.put(position[j], "" + (j+1));
         }
     }
 
@@ -31,26 +35,41 @@ public class Board {
 
     }
 
-    public boolean checkWinner(){
+    public boolean checkWinner() {
 
-        //Check if anyone has 3-5 connecting boxes, depending on layout
-        String firstPosition = null;
-        String secondPosition = null;
-        String thirdPosition = null;
+        boolean foundWinner = false;
 
-        for (int i = 0; i <= 2; i++) {
+        List<List<Integer>> winCombinations = Arrays.asList(
+                Arrays.asList(1, 2, 3),  // Rad 1
+                Arrays.asList(4, 5, 6),  // Rad 2
+                Arrays.asList(7, 8, 9),  // Rad 3
+                Arrays.asList(1, 4, 7),  // Kolumn 1
+                Arrays.asList(2, 5, 8),  // Kolumn 2
+                Arrays.asList(3, 6, 9),  // Kolumn 3
+                Arrays.asList(1, 5, 9),  // Diagonal 1
+                Arrays.asList(3, 5, 7)   // Diagonal 2
+        );
 
-             firstPosition = board.get(i * numberOfboxes);
-             secondPosition = board.get(i * numberOfboxes + 1);
-             thirdPosition = board.get(i * numberOfboxes + 2);
+        for (List<Integer> combination : winCombinations) {
+            // Hämta värdena på de tre positionerna från din HashMap
+            String value1 = board.get(combination.get(0));
+            String value2 = board.get(combination.get(1));
+            String value3 = board.get(combination.get(2));
 
-            if (firstPosition != null && firstPosition.equals(secondPosition) && firstPosition.equals(thirdPosition)) {
-                return true;
+            // Kontrollera om alla värden är samma och inte tomma
+            if (value1.equals(value2) && value2.equals(value3) && !value1.isEmpty()) {
+                // Det är en vinst!
+                foundWinner = true;
+                break;  // Om vi har hittat en vinst, behöver vi inte kontrollera resten av kombinationerna
             }
         }
-        return false;
-    }
 
+
+
+
+    return foundWinner;
+
+    }
 
     public String toString() {
 
@@ -63,15 +82,18 @@ public class Board {
         StringBuilder gameBoard = new StringBuilder();
 
         //Create gameboard
-        for (int i = 0; i < length; i++) {
+
+        gameBoard.append("\n--------------------\n");
+        for (int i = 1; i <= length; i++) {
 
             gameBoard.append("[ ").append(this.board.get(i)).append(" ]");
 
-            //create line break
-            if (i == numberOfboxes - 1 || i == (numberOfboxes * 2 - 1)) {
+            //create line breaks
+            if (i == numberOfboxes || i == (numberOfboxes * 2) || i == (numberOfboxes * 3) || i == (numberOfboxes * 4)) {
                 gameBoard.append("\n");
             }
         }
+        gameBoard.append("--------------------\n");
 
         return gameBoard.toString();
     }
