@@ -84,7 +84,7 @@ public class Board {
         winCombinations.add(diagonal1);
         winCombinations.add(diagonal2);
 
-        //For checking the combinations, un comment to view
+        //For checking the combinations, un-comment to view
         /*
         for (List<Integer> row : winCombinations) {
             System.out.println(row);
@@ -107,7 +107,7 @@ public class Board {
                 }
 
                 if (allSame) {
-                    // Yeah, allsame variable is still true, so, we have a winenr
+                    // Yeah, allsame variable is still true, so we have a winner
                     foundWinner = true;
                     break; //Stop loop
                 }
@@ -133,6 +133,8 @@ public class Board {
     public String toString() {
 
         //Print board
+        //just format, 8 lines per box will make it look nicer in the terminal. I make it a constant here.
+        final int LINES_PER_SQUARE = 8;
 
         //Length of gameboard
         int length = numberOfboxes * numberOfboxes;
@@ -141,18 +143,24 @@ public class Board {
         StringBuilder gameBoard = new StringBuilder();
 
         //Create gameboard
-
-        gameBoard.append("\n---------------\n");
+        gameBoard.append("-".repeat(LINES_PER_SQUARE * numberOfboxes));
+        gameBoard.append("\n");
         for (int i = 1; i <= length; i++) {
 
-            gameBoard.append("[ ").append(this.board.get(i)).append(" ]");
-
+            //different spacing depending on number (to align).
+            if (i >= 10){
+                gameBoard.append("[  ").append(this.board.get(i)).append("  ]");
+            }
+            else {
+                gameBoard.append("[  ").append(this.board.get(i)).append("   ]");
+            }
             //create line breaks
-            if (i == numberOfboxes || i == (numberOfboxes * 2) || i == (numberOfboxes * 3) || i == (numberOfboxes * 4)) {
+            if (i % numberOfboxes == 0) {
+                gameBoard.append("\n");
+                gameBoard.append("-".repeat(LINES_PER_SQUARE * numberOfboxes));
                 gameBoard.append("\n");
             }
         }
-        gameBoard.append("\n---------------\n");
 
         return gameBoard.toString();
     }

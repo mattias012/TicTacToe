@@ -34,7 +34,7 @@ public class Main {
 
 
             //How large battlefield?
-            System.out.println("How many large gameboard do you want? 3, 4 or 5?");
+            System.out.println("How many large gameboard do you want? 3, 4 or 5 (or more if you want..)?");
             int numberOfBoxes = scanner.nextInt();
 
             //Clear scanner
@@ -98,7 +98,7 @@ public class Main {
                 //Sort arraylist from highest to lowest using comparator and collections.
                 Comparator<Player> compareByPoints = (Player p1, Player p2) -> p1.getPoints().compareTo(p2.getPoints());
 
-                //reverse the order of the list so highest points is first
+                //reverse the order of the list so the highest point is first
                 Collections.sort(players, Collections.reverseOrder(compareByPoints));
 
                 //Print scoreboard with highlighted number 1
