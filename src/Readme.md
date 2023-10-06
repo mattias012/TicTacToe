@@ -1,0 +1,1 @@
+This is Tic Tac Toe made in Java. Created with a Hashmap as board and lists for winning combinations.
