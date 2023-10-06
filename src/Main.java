@@ -27,6 +27,8 @@ public class Main {
         //Add playerone to the players list
         players.add(playerOne);
 
+        String nameComputer = "Super Good Computer Player";
+
         if (menuChoice == 1) {
             //If 1.vs.1 is selected, add second player.
             System.out.print("Name player 2: ");
@@ -38,7 +40,8 @@ public class Main {
 
         } else {
             //Create computer player.
-            Player playerTwo = new Computer("Super Good Computer Player", "O");
+
+            Player playerTwo = new Computer(nameComputer, "O");
             players.add(playerTwo);
         }
 
@@ -80,12 +83,15 @@ public class Main {
                         break;
                     }
 
-                    if (!player.getplayerName().equals("Super Good Computer Player")) {
-                        System.out.println(player.getplayerName() + " made a move, now it's your turn ");
+                    if (!player.getplayerName().equals(nameComputer)) {
+                        System.out.println(nameComputer + " already made a move, now it's your turn ");
                         System.out.print(player.getplayerName() + ", select a box by number: ");
                     }
                     //Make move
                     int markThisBox = player.makeMove(board.getBoard());
+
+                    //Motivation
+                    player.talk();
 
                     //Update board
                     board.setBoard(markThisBox, player);

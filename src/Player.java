@@ -49,4 +49,7 @@ public class Player {
         return markThisBox;
     }
 
+    public void talk(){
+
+    }
 }
