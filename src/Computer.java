@@ -30,6 +30,7 @@ public class Computer extends Player {
         return markThisBoxFromComputer;
 
     }
+    @Override
     public void talk(){
 
         ArrayList<String> motivation = new ArrayList<>();
