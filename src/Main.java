@@ -13,119 +13,121 @@ public class Main {
         System.out.println("2. You vs. Computer");
 
         Scanner scanner = new Scanner(System.in);
-        int menuChoice = scanner.nextInt();
+        int menuChoice = Integer.parseInt(scanner.nextLine());
+
+        //Store players in a players list
+        ArrayList<Player> players = new ArrayList<>();
+
+        //Create players
+        System.out.print("Name player 1: ");
+        String namePlayerOne = scanner.nextLine();
+
+        Player playerOne = new Player(namePlayerOne, "X");
+
+        //Add playerone to the players list
+        players.add(playerOne);
 
         if (menuChoice == 1) {
-            scanner.nextLine(); //clear scanner
-
-            System.out.print("Name player 1: ");
-            String namePlayerOne = scanner.nextLine();
+            //If 1.vs.1 is selected, add second player.
             System.out.print("Name player 2: ");
             String namePlayerTwo = scanner.nextLine();
 
-            //Create players
-            Player playerOne = new Player(namePlayerOne, "X");
+            //Create and add player 2.
             Player playerTwo = new Player(namePlayerTwo, "O");
-
-            //Store players
-            ArrayList<Player> players = new ArrayList<>();
-            players.add(playerOne);
             players.add(playerTwo);
 
+        } else {
+            //Create computer player.
+            Player playerTwo = new Computer("Super Good Computer Player", "O");
+            players.add(playerTwo);
+        }
 
-            //How large battlefield?
-            System.out.println("How many large gameboard do you want? 3, 4 or 5 (or more if you want..)?");
-            int numberOfBoxes = scanner.nextInt();
+        //How large battlefield?
+        System.out.println("How many large gameboard do you want? 3, 4 or 5 (or more if you want..)?");
+        int numberOfBoxes = Integer.parseInt(scanner.nextLine());
 
-            //Clear scanner
-            scanner.nextLine();
+        //Play game
+        //Take turns
+        boolean isThereAWinner = false;
+        boolean stopGame = false;
 
-            //Play game
-            //Take turns
-            boolean isThereAWinner = false;
-            boolean stopGame = false;
+        //Run game until someone says stop.
+        while (!stopGame) {
 
-            //Run game until someone says stop.
-            while (!stopGame) {
+            //Create board each time a new game starts
+            Board board = new Board(numberOfBoxes);
 
-                //Create board each time a new game starts
-                Board board = new Board(numberOfBoxes);
+            //shuffle players each turn. It needs to be fair.
+            Collections.shuffle(players);
 
-                //shuffle players each turn. It needs to be fair.
-                Collections.shuffle(players);
+            System.out.println("NEW GAME - LET'S GO!");
+            int turn = 1;
+            while (!isThereAWinner) {
 
-                System.out.println("NEW GAME - LET'S GO!");
+                for (Player player : players) {
 
-                while (!isThereAWinner) {
+                    //Print board prior to every turn
+                    //Print turn as well
+                    System.out.println("Turn " + turn + "\n");
+                    System.out.println(board);
 
-                        for (Player player : players) {
-                            System.out.println(board);
+                    //Check that it is possible to continue to play.
+                    int numberOfBoxesLeft = board.checkNumberOfBoxesLeft();
+                    if (numberOfBoxesLeft == 0) {
+                        System.out.println("\nTied! Better luck next time guys.");
+                        System.out.println(board);
+                        isThereAWinner = true;
+                        break;
+                    }
 
-                            //Check that it is possible to continue to play.
-                            int numberOfBoxesLeft = board.checkNumberOfBoxesLeft();
-                            if (numberOfBoxesLeft == 0) {
-                                System.out.println("\nTied! Better luck next time guys.");
-                                System.out.println(board);
-                                isThereAWinner = true;
-                                break;
-                            }
+                    if (!player.getplayerName().equals("Super Good Computer Player")) {
+                        System.out.println(player.getplayerName() + " made a move, now it's your turn ");
+                        System.out.print(player.getplayerName() + ", select a box by number: ");
+                    }
+                    //Make move
+                    int markThisBox = player.makeMove(board.getBoard());
 
-                            System.out.print(player.getplayerName() + ", select a box by number: ");
-                            int markThisBox = Integer.parseInt(scanner.nextLine());
+                    //Update board
+                    board.setBoard(markThisBox, player);
 
-                            while (board.getBoard().get(markThisBox).equals("X") || board.getBoard().get(markThisBox).equals("O")) {
+                    //Check if there's a winner
+                    isThereAWinner = board.checkWinner();
 
-                                System.out.println("Position already marked. Select another.");
-                                markThisBox = Integer.parseInt(scanner.nextLine());
-
-                            }
-
-                            //Update board
-                            board.setBoard(markThisBox, player);
-
-                            //Check if there's a winner
-                            isThereAWinner = board.checkWinner();
-
-                            if (isThereAWinner) {
-                                System.out.println("\nWe have a winner! Congratulations " + player.getplayerName() + "!");
-                                player.setPoints();
-                                System.out.println(board);
-                                break;
-                            }
-                        }
-                }
-
-                //Sort arraylist from highest to lowest using comparator and collections.
-                Comparator<Player> compareByPoints = (Player p1, Player p2) -> p1.getPoints().compareTo(p2.getPoints());
-
-                //reverse the order of the list so the highest point is first
-                Collections.sort(players, Collections.reverseOrder(compareByPoints));
-
-                //Print scoreboard with highlighted number 1
-                System.out.println("--- Scoreboard ---");
-                for (int i = 0; i < players.size(); i++) {
-                    if (i == 0) {
-                        System.out.println("1.  *** " + players.get(0).getplayerName() + " " + players.get(0).getPoints() + " ***");
-                    } else {
-                        System.out.println(i + 1 + ".  " + players.get(i).getplayerName() + " " + players.get(i).getPoints());
+                    if (isThereAWinner) {
+                        System.out.println(board);
+                        System.out.println("\nWe have a winner! Congratulations " + player.getplayerName() + "!");
+                        player.setPoints();
+                        break;
                     }
                 }
-                System.out.println("------------------");
+                turn++;
+            }
 
-                //Do you want to continue?
-                System.out.println("\nStop playing? y/n");
-                String stopOrContinue = scanner.nextLine().toLowerCase();
-                if (stopOrContinue.equals("y")) {
-                    stopGame = true;
-                }
-                else {
-                    isThereAWinner = false;
+            //Sort arraylist from highest to lowest using comparator and collections.
+            Comparator<Player> compareByPoints = (Player p1, Player p2) -> p1.getPoints().compareTo(p2.getPoints());
+
+            //reverse the order of the list so the highest point is first
+            Collections.sort(players, Collections.reverseOrder(compareByPoints));
+
+            //Print scoreboard with highlighted number 1
+            System.out.println("--- Scoreboard ---");
+            for (int i = 0; i < players.size(); i++) {
+                if (i == 0) {
+                    System.out.println("1.  *** " + players.get(0).getplayerName() + " " + players.get(0).getPoints() + " ***");
+                } else {
+                    System.out.println(i + 1 + ".  " + players.get(i).getplayerName() + " " + players.get(i).getPoints());
                 }
             }
-            //System.out.println(board);
+            System.out.println("------------------");
 
-        } else {
-            //Run computer code
+            //Do you want to continue?
+            System.out.println("\nStop playing? y/n");
+            String stopOrContinue = scanner.nextLine().toLowerCase();
+            if (stopOrContinue.equals("y")) {
+                stopGame = true;
+            } else {
+                isThereAWinner = false;
+            }
         }
     }
 

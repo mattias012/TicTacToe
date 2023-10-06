@@ -1,5 +1,7 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Player {
 
@@ -29,6 +31,22 @@ public class Player {
     }
     public String getPoints(){
         return this.points + "p";
+    }
+    public int makeMove(HashMap<Integer, String> board){
+
+
+        Scanner scanner = new Scanner(System.in);
+
+        int markThisBox = Integer.parseInt(scanner.nextLine());
+
+        //Check that the box is not already taken by any player.
+        while (board.get(markThisBox).equals("X") || board.get(markThisBox).equals("O")) {
+
+            System.out.println("Position already marked. Select another one.");
+            markThisBox = Integer.parseInt(scanner.nextLine());
+
+        }
+        return markThisBox;
     }
 
 }

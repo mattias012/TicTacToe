@@ -27,9 +27,10 @@ public class Board {
         }
     }
 
-    public HashMap<Integer, String> getBoard(){
+    public HashMap<Integer, String> getBoard() {
         return this.board;
     }
+
     //Update board
     public void setBoard(int position, Player player) {
 
@@ -46,7 +47,7 @@ public class Board {
         //First create a list variable to store 4 lists
         List<List<Integer>> winCombinations = new ArrayList<>();
 
-        int size = numberOfboxes;  //size om winning combinations is number of boxes
+        int size = numberOfboxes;  //size f winning combinations is number of boxes
 
         //First create winning list for rows
         for (int i = 0; i < size; i++) {
@@ -54,7 +55,7 @@ public class Board {
             List<Integer> row = new ArrayList<>();
             for (int j = 0; j < size; j++) {
                 //Add combination to row list
-                row.add(i*size + j + 1);
+                row.add(i * size + j + 1);
             }
             //Add row list to the winning combination list
             winCombinations.add(row);
@@ -66,7 +67,7 @@ public class Board {
             List<Integer> column = new ArrayList<>();
             for (int j = 0; j < size; j++) {
                 //add combination to column list
-                column.add(i + j*size + 1);
+                column.add(i + j * size + 1);
             }
             //add column list to the winning combination list
             winCombinations.add(column);
@@ -77,8 +78,8 @@ public class Board {
         List<Integer> diagonal2 = new ArrayList<>();
         for (int i = 0; i < size; i++) {
             //add combinations to each list
-            diagonal1.add(i*size + i + 1);
-            diagonal2.add((i+1)*size - i);
+            diagonal1.add(i * size + i + 1);
+            diagonal2.add((i + 1) * size - i);
         }
         //Add these two combinations to the winning list
         winCombinations.add(diagonal1);
@@ -148,10 +149,9 @@ public class Board {
         for (int i = 1; i <= length; i++) {
 
             //different spacing depending on number (to align).
-            if (i >= 10){
+            if (i >= 10) {
                 gameBoard.append("[  ").append(this.board.get(i)).append("  ]");
-            }
-            else {
+            } else {
                 gameBoard.append("[  ").append(this.board.get(i)).append("   ]");
             }
             //create line breaks
