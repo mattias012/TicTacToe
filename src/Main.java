@@ -32,8 +32,6 @@ public class Main {
             players.add(playerOne);
             players.add(playerTwo);
 
-            //shuffle players. It needs to be fair.
-            Collections.shuffle(players);
 
             //How large battlefield?
             System.out.println("How many large gameboard do you want? 3, 4 or 5?");
@@ -53,37 +51,48 @@ public class Main {
                 //Create board each time a new game starts
                 Board board = new Board(numberOfBoxes);
 
+                //shuffle players each turn. It needs to be fair.
+                Collections.shuffle(players);
+
+                System.out.println("NEW GAME - LET'S GO!");
+
                 while (!isThereAWinner) {
 
-                    for (Player player : players) {
-                        System.out.println(board);
+                        for (Player player : players) {
+                            System.out.println(board);
 
-                        System.out.print(player.getplayerName() + ", select a box, by number: ");
-                        int markThisBox = scanner.nextInt();
+                            //Check that it is possible to continue to play.
+                            int numberOfBoxesLeft = board.checkNumberOfBoxesLeft();
+                            if (numberOfBoxesLeft == 0) {
+                                System.out.println("\nTied! Better luck next time guys.");
+                                System.out.println(board);
+                                isThereAWinner = true;
+                                break;
+                            }
 
-                        while (board.getBoard().get(markThisBox).equals("X") || board.getBoard().get(markThisBox).equals("O")) {
-                                markThisBox = scanner.nextInt();
+                            System.out.print(player.getplayerName() + ", select a box by number: ");
+                            int markThisBox = Integer.parseInt(scanner.nextLine());
+
+                            while (board.getBoard().get(markThisBox).equals("X") || board.getBoard().get(markThisBox).equals("O")) {
+
                                 System.out.println("Position already marked. Select another.");
+                                markThisBox = Integer.parseInt(scanner.nextLine());
+
+                            }
+
+                            //Update board
+                            board.setBoard(markThisBox, player);
+
+                            //Check if there's a winner
+                            isThereAWinner = board.checkWinner();
+
+                            if (isThereAWinner) {
+                                System.out.println("\nWe have a winner! Congratulations " + player.getplayerName() + "!");
+                                player.setPoints();
+                                System.out.println(board);
+                                break;
+                            }
                         }
-
-                        //Update board
-                        board.setBoard(markThisBox, player);
-
-                        //Check if there's a winner
-                        isThereAWinner = board.checkWinner();
-
-                        if (isThereAWinner) {
-                            System.out.println("\nWe have a winner! Congratulations " + player.getplayerName() + "!");
-                            player.setPoints();
-                            break;
-                        }
-
-                        //Check that it is possible to continue to play.
-                        int numberOfBoxesLeft = board.checkNumberOfBoxesLeft();
-                        if (numberOfBoxesLeft == 0) {
-                            System.out.println("\nTied! Better luck next time guys.");
-                        }
-                    }
                 }
 
                 //Sort arraylist from highest to lowest using comparator and collections.
@@ -107,11 +116,14 @@ public class Main {
                 if (stopOrContinue.equals("y")) {
                     stopGame = true;
                 }
+                else {
+                    isThereAWinner = false;
+                }
             }
             //System.out.println(board);
 
         } else {
-            //Run computer
+            //Run computer code
         }
     }
 
