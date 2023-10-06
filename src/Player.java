@@ -1,10 +1,13 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
 public class Player {
 
     //Playe class
 
-    private String playerName;
-    private String playerType;
-    private int points;
+    protected String playerName;
+    protected String playerType;
+    protected int points;
 
     Player(String playerName, String playerType){
         this.playerName = playerName;
@@ -20,4 +23,12 @@ public class Player {
     public String getPlayerType(){
         return this.playerType;
     }
+
+    public void setPoints() {
+        this.points = this.points + 1;
+    }
+    public String getPoints(){
+        return this.points + "p";
+    }
+
 }

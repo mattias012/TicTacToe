@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Board {
 
@@ -13,24 +10,30 @@ public class Board {
 
     //Construct the board object
     Board(int numberOfboxes) {
+
         this.numberOfboxes = numberOfboxes;
         this.numberOfRows = numberOfboxes;
 
+        //Create an array depending on selected size of board
+        //This array is used to put numbers in hashmap keys.
         int position[] = new int[numberOfboxes * numberOfboxes];
 
         for (int i = 0; i < position.length; i++) {
-            position[i] = i+1;
+            position[i] = i + 1;
         }
 
         for (int j = 0; j < position.length; j++) {
-            this.board.put(position[j], "" + (j+1));
+            this.board.put(position[j], "" + (j + 1));
         }
     }
 
+    public HashMap<Integer, String> getBoard(){
+        return this.board;
+    }
     //Update board
     public void setBoard(int position, Player player) {
 
-        //Change the board accordingly..
+        //Change the board accordingly.
         this.board.put(position, player.getPlayerType());
 
     }
@@ -39,13 +42,14 @@ public class Board {
 
         boolean foundWinner = false;
 
+        //List possible winning combinations
         List<List<Integer>> winCombinations = Arrays.asList(
-                Arrays.asList(1, 2, 3),  // Rad 1
-                Arrays.asList(4, 5, 6),  // Rad 2
-                Arrays.asList(7, 8, 9),  // Rad 3
-                Arrays.asList(1, 4, 7),  // Kolumn 1
-                Arrays.asList(2, 5, 8),  // Kolumn 2
-                Arrays.asList(3, 6, 9),  // Kolumn 3
+                Arrays.asList(1, 2, 3),  // Row 1
+                Arrays.asList(4, 5, 6),  // Row 2
+                Arrays.asList(7, 8, 9),  // Row 3
+                Arrays.asList(1, 4, 7),  // Column 1
+                Arrays.asList(2, 5, 8),  // Column 2
+                Arrays.asList(3, 6, 9),  // Column 3
                 Arrays.asList(1, 5, 9),  // Diagonal 1
                 Arrays.asList(3, 5, 7)   // Diagonal 2
         );
@@ -64,11 +68,20 @@ public class Board {
             }
         }
 
+        return foundWinner;
+    }
 
+    public int checkNumberOfBoxesLeft() {
 
-
-    return foundWinner;
-
+        //Count number of boxes left, used to see if game is tied.
+        int boxesLeft = 0;
+        for (Map.Entry<Integer, String> entry : board.entrySet()) {
+            String value = entry.getValue();
+            if (value.matches("\\d")) { //Check if the value contains a digit, if it does it is free and left to play.
+                boxesLeft = boxesLeft + 1;
+            }
+        }
+        return boxesLeft;
     }
 
     public String toString() {
@@ -83,7 +96,7 @@ public class Board {
 
         //Create gameboard
 
-        gameBoard.append("\n--------------------\n");
+        gameBoard.append("\n---------------\n");
         for (int i = 1; i <= length; i++) {
 
             gameBoard.append("[ ").append(this.board.get(i)).append(" ]");
@@ -93,7 +106,7 @@ public class Board {
                 gameBoard.append("\n");
             }
         }
-        gameBoard.append("--------------------\n");
+        gameBoard.append("---------------\n");
 
         return gameBoard.toString();
     }
