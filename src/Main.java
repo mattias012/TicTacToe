@@ -97,6 +97,8 @@ public class Main {
 
                 //Sort arraylist from highest to lowest using comparator and collections.
                 Comparator<Player> compareByPoints = (Player p1, Player p2) -> p1.getPoints().compareTo(p2.getPoints());
+
+                //reverse the order of the list so highest points is first
                 Collections.sort(players, Collections.reverseOrder(compareByPoints));
 
                 //Print scoreboard with highlighted number 1
@@ -105,7 +107,7 @@ public class Main {
                     if (i == 0) {
                         System.out.println("1.  *** " + players.get(0).getplayerName() + " " + players.get(0).getPoints() + " ***");
                     } else {
-                        System.out.println(i + 1 + ".  " + players.get(0).getplayerName() + " " + players.get(i).getPoints());
+                        System.out.println(i + 1 + ".  " + players.get(i).getplayerName() + " " + players.get(i).getPoints());
                     }
                 }
                 System.out.println("------------------");

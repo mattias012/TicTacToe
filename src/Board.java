@@ -43,28 +43,74 @@ public class Board {
         boolean foundWinner = false;
 
         //List possible winning combinations
-        List<List<Integer>> winCombinations = Arrays.asList(
-                Arrays.asList(1, 2, 3),  // Row 1
-                Arrays.asList(4, 5, 6),  // Row 2
-                Arrays.asList(7, 8, 9),  // Row 3
-                Arrays.asList(1, 4, 7),  // Column 1
-                Arrays.asList(2, 5, 8),  // Column 2
-                Arrays.asList(3, 6, 9),  // Column 3
-                Arrays.asList(1, 5, 9),  // Diagonal 1
-                Arrays.asList(3, 5, 7)   // Diagonal 2
-        );
+        //First create a list variable to store 4 lists
+        List<List<Integer>> winCombinations = new ArrayList<>();
 
+        int size = numberOfboxes;  //size om winning combinations is number of boxes
+
+        //First create winning list for rows
+        for (int i = 0; i < size; i++) {
+            //Create list
+            List<Integer> row = new ArrayList<>();
+            for (int j = 0; j < size; j++) {
+                //Add combination to row list
+                row.add(i*size + j + 1);
+            }
+            //Add row list to the winning combination list
+            winCombinations.add(row);
+        }
+
+        //Create a winning list for columns
+        for (int i = 0; i < size; i++) {
+            //Create list
+            List<Integer> column = new ArrayList<>();
+            for (int j = 0; j < size; j++) {
+                //add combination to column list
+                column.add(i + j*size + 1);
+            }
+            //add column list to the winning combination list
+            winCombinations.add(column);
+        }
+
+        //For diagonals, create to separate lists
+        List<Integer> diagonal1 = new ArrayList<>();
+        List<Integer> diagonal2 = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            //add combinations to each list
+            diagonal1.add(i*size + i + 1);
+            diagonal2.add((i+1)*size - i);
+        }
+        //Add these two combinations to the winning list
+        winCombinations.add(diagonal1);
+        winCombinations.add(diagonal2);
+
+        //For checking the combinations, un comment to view
+        /*
+        for (List<Integer> row : winCombinations) {
+            System.out.println(row);
+        }
+         */
+
+        //Loop through each combination list
         for (List<Integer> combination : winCombinations) {
-            // Hämta värdena på de tre positionerna från din HashMap
-            String value1 = board.get(combination.get(0));
-            String value2 = board.get(combination.get(1));
-            String value3 = board.get(combination.get(2));
+            if (!combination.isEmpty()) {
+                //Get first value in the combination
+                String firstValue = board.get(combination.get(0));
+                boolean allSame = true;
 
-            // Kontrollera om alla värden är samma och inte tomma
-            if (value1.equals(value2) && value2.equals(value3) && !value1.isEmpty()) {
-                // Det är en vinst!
-                foundWinner = true;
-                break;  // Om vi har hittat en vinst, behöver vi inte kontrollera resten av kombinationerna
+                //Loop through/get each value that this combination list has, if they are not equal, return false
+                for (int i = 1; i < combination.size(); i++) {
+                    if (!board.get(combination.get(i)).equals(firstValue)) {
+                        allSame = false;
+                        break;
+                    }
+                }
+
+                if (allSame) {
+                    // Yeah, allsame variable is still true, so, we have a winenr
+                    foundWinner = true;
+                    break; //Stop loop
+                }
             }
         }
 
@@ -77,7 +123,7 @@ public class Board {
         int boxesLeft = 0;
         for (Map.Entry<Integer, String> entry : board.entrySet()) {
             String value = entry.getValue();
-            if (value.matches("\\d")) { //Check if the value contains a digit, if it does it is free and left to play.
+            if (value.matches("\\d+")) { //Check if the value contains a digit, if it does it is free and left to play.
                 boxesLeft = boxesLeft + 1;
             }
         }
@@ -106,7 +152,7 @@ public class Board {
                 gameBoard.append("\n");
             }
         }
-        gameBoard.append("---------------\n");
+        gameBoard.append("\n---------------\n");
 
         return gameBoard.toString();
     }
