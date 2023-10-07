@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -14,7 +11,6 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         int menuChoice = checkMenuChoice(scanner);
-
 
         //Store players in a players list
         ArrayList<Player> players = new ArrayList<>();
@@ -40,13 +36,17 @@ public class Main {
             players.add(playerTwo);
 
         } else {
-            //Create computer player.
+            //Create and computer player.
+            System.out.println("Select level of " + nameComputer);
+            System.out.println("1. Easy");
+            System.out.println("2. Tactical");
+            int level = checkMenuChoice(scanner);
 
-            Player playerTwo = new Computer(nameComputer, "O");
+            Player playerTwo = new Computer(nameComputer, "O", level);
             players.add(playerTwo);
         }
 
-        //How large battlefield?
+         //How large battlefield?
         System.out.println("How many large gameboard do you want? 3, 4 or 5 (or more if you want..)?");
         int numberOfBoxes = checkInputIsANumber(scanner);
 
@@ -57,18 +57,29 @@ public class Main {
         final int LINES_PER_SQUARE = 8;
 
         //Run game until someone says stop.
+        int round = 1;
         while (!stopGame) {
 
             //Create board each time a new game starts
             Board board = new Board(numberOfBoxes);
 
-            //shuffle players each turn. It needs to be fair.
+            if (menuChoice == 2){
+                //assign this board to the computer, so we can use it in winning combination list.
+                if (players.get(1) instanceof Computer) { //tips from alize
+                    ((Computer)players.get(1)).setBoard(board);
+                } else {
+                    ((Computer)players.get(0)).setBoard(board);
+                }
+            }
+
+            //Now shuffle players each turn. It needs to be fair.
             Collections.shuffle(players);
 
             System.out.println("NEW GAME - LET'S GO!");
+            //System.out.println(board);
+
             int turn = 1;
             while (!isThereAWinner) {
-
                 for (Player player : players) {
 
                     //Print board prior to every turn
@@ -78,13 +89,10 @@ public class Main {
                     //Create a nice header
                     header.append("-".repeat(LINES_PER_SQUARE * numberOfBoxes));
                     header.append("\n");
-                    header.append(" ".repeat((numberOfBoxes * numberOfBoxes)-2));
-                    header.append("Turn " + turn + "\n");
-                    header.append(" ".repeat((numberOfBoxes * numberOfBoxes)-2));
-                    header.append(player.getplayerName());
+                    header.append("Round: " + round + ", Turn: " + turn + "\n");
+                    header.append("Player: " + player.getplayerName());
                     System.out.println(header);
 
-                    //Print board
                     System.out.println(board);
 
                     //Check that it is possible to continue to play.
@@ -129,7 +137,7 @@ public class Main {
             Collections.sort(players, Collections.reverseOrder(compareByPoints));
 
             //Print scoreboard with highlighted number 1
-            System.out.println("--- Scoreboard ---");
+            System.out.println("\n------- Scoreboard -------");
             for (int i = 0; i < players.size(); i++) {
                 if (i == 0) {
                     System.out.println("1.  *** " + players.get(0).getplayerName() + " " + players.get(0).getPoints() + " ***");
@@ -137,7 +145,7 @@ public class Main {
                     System.out.println(i + 1 + ".  " + players.get(i).getplayerName() + " " + players.get(i).getPoints());
                 }
             }
-            System.out.println("------------------");
+            System.out.println("--------------------------");
 
             //Do you want to continue?
             System.out.println("\nStop playing? y/n");
@@ -147,6 +155,7 @@ public class Main {
             } else {
                 isThereAWinner = false;
             }
+            round++; //Increase round counter
         }
         System.out.println("Game over");
     }
@@ -168,6 +177,7 @@ public class Main {
             }
         }
     }
+
     public static int checkInputIsANumber(Scanner scanner) {
 
         while (true) {

@@ -4,15 +4,16 @@ public class Board {
 
     //Board class, how will it look?
 
-    int numberOfboxes;
-    int numberOfRows;
-    HashMap<Integer, String> board = new HashMap<>();
+    private int numberOfboxes;
+
+    private HashMap<Integer, String> board = new HashMap<>();
+
+    protected List<List<Integer>> winCombinations;
 
     //Construct the board object
     Board(int numberOfboxes) {
 
         this.numberOfboxes = numberOfboxes;
-        this.numberOfRows = numberOfboxes;
 
         //Create an array depending on selected size of board
         //This array is used to put numbers in hashmap keys.
@@ -25,6 +26,9 @@ public class Board {
         for (int j = 0; j < position.length; j++) {
             this.board.put(position[j], "" + (j + 1));
         }
+
+        //set winning combinations for this board by using the method getWinCombinations()
+        this.winCombinations = getWinCombinations();
     }
 
     public HashMap<Integer, String> getBoard() {
@@ -39,10 +43,7 @@ public class Board {
 
     }
 
-    public boolean checkWinner() {
-
-        boolean foundWinner = false;
-
+    public List<List<Integer>> getWinCombinations(){
         //List possible winning combinations
         //First create a list variable to store 4 lists
         List<List<Integer>> winCombinations = new ArrayList<>();
@@ -91,6 +92,12 @@ public class Board {
             System.out.println(row);
         }
          */
+        return winCombinations;
+    }
+
+    public boolean checkWinner() {
+
+        boolean foundWinner = false;
 
         //Loop through each combination list
         for (List<Integer> combination : winCombinations) {
@@ -109,6 +116,7 @@ public class Board {
 
                 if (allSame) {
                     // Yeah, allsame variable is still true, so we have a winner
+                    //set foundwinner to true
                     foundWinner = true;
                     break; //Stop loop
                 }

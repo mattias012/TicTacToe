@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Player {
 
-    //Playe class
+    //Player class
 
     protected String playerName;
     protected String playerType;
@@ -36,22 +36,18 @@ public class Player {
 
         Scanner scanner = new Scanner(System.in);
 
+        //first make sure user puts a number
         int markThisBox = Main.checkInputIsANumber(scanner);
 
+        //Set max numbers
         int availableNumbersToSelect = board.size();
 
-        while (markThisBox > availableNumbersToSelect || markThisBox < 1){
-            System.out.println("Outside board. Select another one.");
+        //Make sure the number chosen is a valid position to avoid NullPointerException.
+        while (markThisBox > availableNumbersToSelect || markThisBox < 1 || board.get(markThisBox).equals("X") || board.get(markThisBox).equals("O")) {
+            System.out.println("Invalid position. Select another one.");
             markThisBox = Main.checkInputIsANumber(scanner);
         }
-
-        //Check that the box is not already taken by any player.
-        while (board.get(markThisBox).equals("X") || board.get(markThisBox).equals("O")) {
-
-            System.out.println("Position already marked or outside board. Select another one.");
-            markThisBox = Main.checkInputIsANumber(scanner);
-
-        }
+        //Return the number
         return markThisBox;
     }
 
