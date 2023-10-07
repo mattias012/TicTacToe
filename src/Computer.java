@@ -23,6 +23,7 @@ public class Computer extends Player {
         int markThisBoxFromComputer;
         ArrayList<Integer> availableBoxes = new ArrayList<>();
 
+        //Loop through hashmap to get all available boxes
         for (Map.Entry<Integer, String> entry : currentBoard.entrySet()) {
             String value = entry.getValue();
             if (value.matches("\\d+")) { //Check if the value contains a digit + means more than 1, if it does it is free and left to play.
@@ -33,10 +34,8 @@ public class Computer extends Player {
         int myRandomNumber = random.nextInt(availableBoxes.size());
         markThisBoxFromComputer = availableBoxes.get(myRandomNumber);
 
-        if (this.level == 1) {
-            return markThisBoxFromComputer;
-
-        } else {
+        //If not random level (1) is selected, lets go for the tactical one
+        if (this.level != 1) {
 
             //Check for winning moves first
             for (Integer box : availableBoxes) {
@@ -45,7 +44,6 @@ public class Computer extends Player {
                 // Make a hypothetical move for the computer
                 tempBoard.put(box, "O");
                 // Check if this move will make the computer win
-                //System.out.println(checkIfThisWillMakeMeWin("O", tempBoard));
                 if (checkIfThisWillMakeMeWin("O", tempBoard)) {
                     //If this make the computer win, of course return it
                     return box;
@@ -56,17 +54,17 @@ public class Computer extends Player {
             for (Integer box : availableBoxes) {
                 // Copy current board to a temporary map, as this is just hypothetical
                 HashMap<Integer, String> tempBoard = new HashMap<>(currentBoard);
-                // Make a hypothetical move for the player
+                // Make a hypothetical move for the human player
                 tempBoard.put(box, "X");
-                // Check if this move will make the player win
+                // Check if this move will make the human player win
                 if (checkIfThisWillMakeMeWin("X", tempBoard)) {
-                    //If this move makes the player win, return it to block the player
+                    //If this move makes the human player win, then return it to block the human player
                     return box;
                 }
             }
-            // If no win or no block is possible, select a random number.
-            return markThisBoxFromComputer;
         }
+        // If no win or no block is possible, select a random number.
+        return markThisBoxFromComputer;
     }
 
     public boolean checkIfThisWillMakeMeWin(String type, HashMap<Integer, String> tempBoard) {
@@ -95,7 +93,7 @@ public class Computer extends Player {
 
                 if (allSame) {
                     // Yeah, allsame variable is still true, so we have a winner
-                    //set foundwinner to true
+                    //set foundwin to true
                     foundWin = true;
                     break; //Stop loop
                 }
@@ -145,7 +143,7 @@ public class Computer extends Player {
         randomWords.add(randomPhraseFour);
         String randomPhraseFive = "You have survived everything you've gone through up until this point..";
         randomWords.add(randomPhraseFive);
-        String randomPhraseSix = "I stay positive. I will conquer this board.\n";
+        String randomPhraseSix = "I stay positive. I will conquer this board.";
         randomWords.add(randomPhraseSix);
         String randomPhraseSeven = "This is an interesting game for sure.. I think I made this move to quick. Or did I?";
         randomWords.add(randomPhraseSeven);
@@ -160,7 +158,7 @@ public class Computer extends Player {
         int selectThisWords = random.nextInt(randomWords.size());
 
         System.out.println(this.playerName + " says:\n");
-        System.out.println(randomWords.get(selectThisWords) + "\n");
+        System.out.println(randomWords.get(selectThisWords));
         System.out.println("Btw, here is a inspiring quote to keep pushing:");
         System.out.println("\n- " + motivation.get(selectThis) + "\n");
 

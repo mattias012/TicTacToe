@@ -15,7 +15,6 @@ public class Player {
         this.playerName = playerName;
         this.playerType = playerType;
         this.points = 0;
-
     }
 
     public String getplayerName(){
@@ -34,6 +33,7 @@ public class Player {
     }
     public int makeMove(HashMap<Integer, String> board){
 
+        //new scanner object
         Scanner scanner = new Scanner(System.in);
 
         //first make sure user puts a number
@@ -52,6 +52,6 @@ public class Player {
     }
 
     public void talk(){
-
+            //Human players don't talk.
     }
 }
