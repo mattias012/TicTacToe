@@ -75,7 +75,7 @@ public class Main {
                     //Print turn as well
                     StringBuilder header = new StringBuilder();
 
-                    //Create gameboard
+                    //Create a nice header
                     header.append("-".repeat(LINES_PER_SQUARE * numberOfBoxes));
                     header.append("\n");
                     header.append(" ".repeat((numberOfBoxes * numberOfBoxes)-2));
@@ -83,12 +83,14 @@ public class Main {
                     header.append(" ".repeat((numberOfBoxes * numberOfBoxes)-2));
                     header.append(player.getplayerName());
                     System.out.println(header);
+
+                    //Print board
                     System.out.println(board);
 
                     //Check that it is possible to continue to play.
                     int numberOfBoxesLeft = board.checkNumberOfBoxesLeft();
                     if (numberOfBoxesLeft == 0) {
-                        System.out.println("\nTied! Better luck next time guys.");
+                        System.out.println("\nTied! Better luck next time guys.\n");
                         System.out.println(board);
                         isThereAWinner = true;
                         break;
@@ -116,9 +118,10 @@ public class Main {
                         break;
                     }
                 }
-                turn++;
+                turn++; //Increase turn variable
             }
 
+            //Scoreboard
             //Sort arraylist from highest to lowest using comparator and collections.
             Comparator<Player> compareByPoints = (Player p1, Player p2) -> p1.getPoints().compareTo(p2.getPoints());
 
