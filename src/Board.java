@@ -47,7 +47,7 @@ public class Board {
         //First create a list variable to store 4 lists
         List<List<Integer>> winCombinations = new ArrayList<>();
 
-        int size = numberOfboxes;  //size f winning combinations is number of boxes
+        int size = numberOfboxes;  //size of winning combinations is number of boxes
 
         //First create winning list for rows
         for (int i = 0; i < size; i++) {

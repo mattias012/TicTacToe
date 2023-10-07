@@ -34,16 +34,22 @@ public class Player {
     }
     public int makeMove(HashMap<Integer, String> board){
 
-
         Scanner scanner = new Scanner(System.in);
 
-        int markThisBox = Integer.parseInt(scanner.nextLine());
+        int markThisBox = Main.checkInputIsANumber(scanner);
+
+        int availableNumbersToSelect = board.size();
+
+        while (markThisBox > availableNumbersToSelect || markThisBox < 1){
+            System.out.println("Outside board. Select another one.");
+            markThisBox = Main.checkInputIsANumber(scanner);
+        }
 
         //Check that the box is not already taken by any player.
         while (board.get(markThisBox).equals("X") || board.get(markThisBox).equals("O")) {
 
-            System.out.println("Position already marked. Select another one.");
-            markThisBox = Integer.parseInt(scanner.nextLine());
+            System.out.println("Position already marked or outside board. Select another one.");
+            markThisBox = Main.checkInputIsANumber(scanner);
 
         }
         return markThisBox;

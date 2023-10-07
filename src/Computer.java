@@ -58,6 +58,7 @@ public class Computer extends Player {
 
         int selectThis = random.nextInt(motivation.size());
 
+        System.out.println("OK, I have made a move, not sure if it is the best one... now it's your turn. \nBtw, here is a inspiring quote to keep pushing:");
         System.out.println("\n" + motivation.get(selectThis) + "\n");
 
     }

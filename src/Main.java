@@ -13,7 +13,8 @@ public class Main {
         System.out.println("2. You vs. Computer");
 
         Scanner scanner = new Scanner(System.in);
-        int menuChoice = Integer.parseInt(scanner.nextLine());
+        int menuChoice = checkMenuChoice(scanner);
+
 
         //Store players in a players list
         ArrayList<Player> players = new ArrayList<>();
@@ -47,12 +48,13 @@ public class Main {
 
         //How large battlefield?
         System.out.println("How many large gameboard do you want? 3, 4 or 5 (or more if you want..)?");
-        int numberOfBoxes = Integer.parseInt(scanner.nextLine());
+        int numberOfBoxes = checkInputIsANumber(scanner);
 
         //Play game
         //Take turns
         boolean isThereAWinner = false;
         boolean stopGame = false;
+        final int LINES_PER_SQUARE = 8;
 
         //Run game until someone says stop.
         while (!stopGame) {
@@ -71,7 +73,16 @@ public class Main {
 
                     //Print board prior to every turn
                     //Print turn as well
-                    System.out.println("Turn " + turn + "\n");
+                    StringBuilder header = new StringBuilder();
+
+                    //Create gameboard
+                    header.append("-".repeat(LINES_PER_SQUARE * numberOfBoxes));
+                    header.append("\n");
+                    header.append(" ".repeat((numberOfBoxes * numberOfBoxes)-2));
+                    header.append("Turn " + turn + "\n");
+                    header.append(" ".repeat((numberOfBoxes * numberOfBoxes)-2));
+                    header.append(player.getplayerName());
+                    System.out.println(header);
                     System.out.println(board);
 
                     //Check that it is possible to continue to play.
@@ -84,7 +95,6 @@ public class Main {
                     }
 
                     if (!player.getplayerName().equals(nameComputer)) {
-                        System.out.println(nameComputer + " already made a move, now it's your turn ");
                         System.out.print(player.getplayerName() + ", select a box by number: ");
                     }
                     //Make move
@@ -135,15 +145,36 @@ public class Main {
                 isThereAWinner = false;
             }
         }
+        System.out.println("Game over");
     }
 
-    static boolean checkIfnumber(String input) {
+    public static int checkMenuChoice(Scanner scanner) {
 
-        //Check if string is only digits
-        if (!input.matches("\\d*")) {
-            return false;
-        } else {
-            return true;
+        while (true) {
+            try {
+                String inputFromUser = scanner.nextLine().trim();
+                int menuChoice = Integer.parseInt(inputFromUser);
+
+                if (menuChoice == 1 || menuChoice == 2) {
+                    return menuChoice;
+                } else {
+                    System.out.println("Wrong selection, please select 1 or 2.");
+                }
+            } catch (Exception e) {
+                System.out.println("Wrong selection, please select 1 or 2.");
+            }
+        }
+    }
+    public static int checkInputIsANumber(Scanner scanner) {
+
+        while (true) {
+            try {
+                String inputFromUser = scanner.nextLine().trim();
+                int input = Integer.parseInt(inputFromUser);
+                return input;
+            } catch (Exception e) {
+                System.out.println("Only numbers please, try again.");
+            }
         }
     }
 }
