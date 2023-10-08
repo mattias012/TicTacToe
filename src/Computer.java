@@ -149,7 +149,7 @@ public class Computer extends Player {
         randomWords.add(randomPhraseSeven);
         String randomPhraseEight = "Wait.. what? I blame the developer.";
         randomWords.add(randomPhraseEight);
-        String randomPhraseNine = ". Is cereal soup?";
+        String randomPhraseNine = "Is cereal soup?";
         randomWords.add(randomPhraseNine);
         String randomPhraseTen = "*Mic drop*";
         randomWords.add(randomPhraseTen);
@@ -157,7 +157,7 @@ public class Computer extends Player {
         int selectThis = random.nextInt(motivation.size());
         int selectThisWords = random.nextInt(randomWords.size());
 
-        System.out.println(this.playerName + " says:\n");
+        System.out.println(this.playerName + " says: ");
         System.out.println(randomWords.get(selectThisWords));
         System.out.println("Btw, here is a inspiring quote to keep pushing:");
         System.out.println("\n- " + motivation.get(selectThis) + "\n");

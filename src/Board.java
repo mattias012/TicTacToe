@@ -158,8 +158,14 @@ public class Board {
 
             //different spacing depending on number (to align).
             if (i >= 10) {
-                gameBoard.append("[  ").append(this.board.get(i)).append("  ]");
-            } else {
+                if(this.board.get(i).equals("X") || this.board.get(i).equals("O")){
+                    gameBoard.append("[  ").append(this.board.get(i)).append("   ]");
+                }
+                else {
+                    gameBoard.append("[  ").append(this.board.get(i)).append("  ]");
+                }
+            }
+            else {
                 gameBoard.append("[  ").append(this.board.get(i)).append("   ]");
             }
             //create line breaks

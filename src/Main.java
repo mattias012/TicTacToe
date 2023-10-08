@@ -9,26 +9,26 @@ public class Main {
         System.out.println("1. 1 vs. 1");
         System.out.println("2. You vs. Computer");
 
+        //Create scanner object
         Scanner scanner = new Scanner(System.in);
+        //Check that input is correct
         int menuChoice = checkMenuChoice(scanner);
 
         //Store players in a players list
         ArrayList<Player> players = new ArrayList<>();
 
-        //Create players
-        System.out.print("Name player 1: ");
-        String namePlayerOne = scanner.nextLine();
-
-        Player playerOne = new Player(namePlayerOne, "X");
-
-        //Add playerone to the players list
-        players.add(playerOne);
-
         String nameComputer = "Super Good Computer Player";
 
         if (menuChoice == 1) {
-            //If 1.vs.1 is selected, add second player.
-            System.out.print("Name player 2: ");
+            //If 1.vs.1 is selected, add 2 players.
+            System.out.print("\nEnter name for player 1: ");
+            String namePlayerOne = scanner.nextLine();
+
+            //Create and add to the players list
+            Player playerOne = new Player(namePlayerOne, "X");
+            players.add(playerOne);
+
+            System.out.print("Enter name for player 2: ");
             String namePlayerTwo = scanner.nextLine();
 
             //Create and add player 2.
@@ -36,8 +36,15 @@ public class Main {
             players.add(playerTwo);
 
         } else {
+            System.out.print("\nEnter name your name (Player 1): ");
+            String namePlayerOne = scanner.nextLine();
+
+            //Create and add to the players list
+            Player playerOne = new Player(namePlayerOne, "X");
+            players.add(playerOne);
+
             //Create and computer player.
-            System.out.println("Select level of " + nameComputer);
+            System.out.println("Select level of the " + nameComputer);
             System.out.println("1. Easy");
             System.out.println("2. Tactical");
             int level = checkMenuChoice(scanner);
@@ -46,14 +53,17 @@ public class Main {
             players.add(playerTwo);
         }
 
-         //How large battlefield?
+        //How large battlefield?
         System.out.println("How many large gameboard do you want? 3, 4 or 5 (or more if you want..)?");
-        int numberOfBoxes = checkInputIsANumber(scanner);
+        int numberOfBoxes = checkInputIsANumberAndConfirmSize(scanner);
 
-        //Play game
-        //Take turns
+        //PLAY GAME
+
+        //Set two booleans for the loops to continue until true.
         boolean isThereAWinner = false;
         boolean stopGame = false;
+
+        //For formatting the board and header
         final int LINES_PER_SQUARE = 8;
 
         //Run game until someone says stop.
@@ -63,20 +73,20 @@ public class Main {
             //Create board each time a new game starts
             Board board = new Board(numberOfBoxes);
 
-            if (menuChoice == 2){
+            if (menuChoice == 2) {
                 //assign this board to the computer, so we can use it in winning combination list.
                 if (players.get(1) instanceof Computer) { //tips from alize
-                    ((Computer)players.get(1)).setBoard(board);
+                    ((Computer) players.get(1)).setBoard(board);
                 } else {
-                    ((Computer)players.get(0)).setBoard(board);
+                    ((Computer) players.get(0)).setBoard(board);
                 }
             }
 
             //Now shuffle players each turn. It needs to be fair.
             Collections.shuffle(players);
 
+            //Lets go
             System.out.println("NEW GAME - LET'S GO!");
-            //System.out.println(board);
 
             int turn = 1;
             while (!isThereAWinner) {
@@ -90,7 +100,7 @@ public class Main {
                     header.append("-".repeat(LINES_PER_SQUARE * numberOfBoxes));
                     header.append("\n");
                     header.append("Round: " + round + ", Turn: " + turn + "\n");
-                    header.append("Player: " + player.getplayerName());
+                    header.append("Player (" + player.getPlayerType() + "): " + player.getplayerName());
                     System.out.println(header);
 
                     System.out.println(board);
@@ -109,6 +119,9 @@ public class Main {
                     }
                     //Make move
                     int markThisBox = player.makeMove(board.getBoard());
+
+                    //Print move
+                    System.out.println("***" + player.getplayerName() + " played " + player.getPlayerType() + " at box " + markThisBox + "***\n");
 
                     //Motivation
                     player.talk();
@@ -148,16 +161,16 @@ public class Main {
             System.out.println("--------------------------");
 
             //Do you want to continue?
-            System.out.println("\nStop playing? y/n");
+            System.out.println("\nContinue playing? y/n");
             String stopOrContinue = scanner.nextLine().toLowerCase();
-            if (stopOrContinue.equals("y")) {
+            if (stopOrContinue.equals("n")) {
                 stopGame = true;
             } else {
                 isThereAWinner = false;
             }
             round++; //Increase round counter
         }
-        System.out.println("Game over");
+        System.out.println("Game over, thanks for playing!");
     }
 
     public static int checkMenuChoice(Scanner scanner) {
@@ -185,6 +198,47 @@ public class Main {
                 String inputFromUser = scanner.nextLine().trim();
                 int input = Integer.parseInt(inputFromUser);
                 return input;
+            } catch (Exception e) {
+                System.out.println("Only numbers please, try again.");
+            }
+        }
+    }
+
+    public static int checkInputIsANumberAndConfirmSize(Scanner scanner) {
+
+        //Method to check size of board. If user selects a large size
+        //we ask if they really want to play this big board.
+        final int MINIMUM_BOARD_SIZE = 3;
+        final int CONSIDER_BOARD_SIZE = 7;
+
+        while (true) {
+            try {
+
+                String inputFromUser = scanner.nextLine().trim();
+                int input = Integer.parseInt(inputFromUser);
+                if (input >= MINIMUM_BOARD_SIZE && input < CONSIDER_BOARD_SIZE) {
+                    return input;
+                } else if (input < MINIMUM_BOARD_SIZE) {
+                    System.out.println("Board needs minimum 3 x 3");
+                    int newInput = checkInputIsANumber(scanner);
+                    if(newInput >= MINIMUM_BOARD_SIZE){
+                        return newInput;
+                    }
+                } else {
+                    System.out.println("Are you sure you want " + input + "x" + input + " as board size? " +
+                            "This will require you or your opponent to get " + input + " in a row. " +
+                            "\nIt will be hard and take time." +
+                            "\n\nPlease confirm your board size by re-entering your number: ");
+
+                    int newInput = checkInputIsANumber(scanner);
+                    if (newInput == input) {
+                        return newInput;
+                    }
+                    //Not needed?
+//                    else {
+//                        continue;
+//                    }
+                }
             } catch (Exception e) {
                 System.out.println("Only numbers please, try again.");
             }
