@@ -108,6 +108,7 @@ public class Board {
 
                 //Loop through/get each value that this combination list has, if they are not equal, return false
                 for (int i = 1; i < combination.size(); i++) {
+                    //allsame wil continue to be true until condition below is true
                     if (!board.get(combination.get(i)).equals(firstValue)) {
                         allSame = false;
                         break;
