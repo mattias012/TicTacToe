@@ -210,20 +210,22 @@ public class Main {
         //we ask if they really want to play this big board.
         final int MINIMUM_BOARD_SIZE = 3;
         final int CONSIDER_BOARD_SIZE = 7;
+        int input = checkInputIsANumber(scanner);
 
         while (true) {
             try {
 
-                String inputFromUser = scanner.nextLine().trim();
-                int input = Integer.parseInt(inputFromUser);
                 if (input >= MINIMUM_BOARD_SIZE && input < CONSIDER_BOARD_SIZE) {
                     return input;
-                } else if (input < MINIMUM_BOARD_SIZE) {
-                    System.out.println("Board needs minimum 3 x 3");
-                    int newInput = checkInputIsANumber(scanner);
-                    if(newInput >= MINIMUM_BOARD_SIZE){
-                        return newInput;
+                }
+                else if (input < MINIMUM_BOARD_SIZE) {
+                    while (input < MINIMUM_BOARD_SIZE) {
+
+                        System.out.println("Board needs to be minimum 3 x 3");
+                        input = checkInputIsANumber(scanner);
                     }
+                    return input;
+
                 } else {
                     System.out.println("Are you sure you want " + input + "x" + input + " as board size? " +
                             "This will require you or your opponent to get " + input + " in a row. " +
@@ -234,10 +236,6 @@ public class Main {
                     if (newInput == input) {
                         return newInput;
                     }
-                    //Not needed?
-//                    else {
-//                        continue;
-//                    }
                 }
             } catch (Exception e) {
                 System.out.println("Only numbers please, try again.");
