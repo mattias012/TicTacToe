@@ -5,7 +5,9 @@ public class Main {
 
         //Welcome to TicTacToe, start with setup
 
-        System.out.println("Welcome to Tic Tac Toe! How do you want to play?");
+        System.out.println("Welcome to Tic Tac Toe! The goal is to get a full row (horizontally, vertically or diagonally) then you win.");
+        System.out.println("When someone wins, you can continue playing with the same setup. Best out of 3 maybe?");
+        System.out.println("\nHow do you want to play?\n");
         System.out.println("1. 1 vs. 1");
         System.out.println("2. You vs. Computer");
 
